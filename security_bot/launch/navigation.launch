@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="map" default="$(find security_bot)/map/map.yaml"/>
+  <arg name="urdf" default="$(find security_bot)/model/security_bot.urdf.xacro"/>
+  <rosparam file="$(find security_bot)/configuration/control.yaml" command="load"/>
+  <rosparam file="$(find security_bot)/configuration/joints.yaml" command="load"/>
+  <param name="description" command="$(find xacro)/xacro.py $(arg model)" />
+  <node type="hardware_robot" pkg="security_bot" output="screen" name="hardware_robot" >
+   <remap to="/cmd_vel" from="/mobile_base_controller/cmd_vel" />
+   </node>
+  <node type="robot_state_publisher"  name="robot_publisher"  pkg="robot_state_publisher" >
+  </node>
+  <node pkg="rviz" type="rviz" name="rviz"  args="-d  $(find security_bot)/configuration/nav_configuration.rviz"/>
+  <node type="spawner" pkg="controller_manager" output="screen" name="controller"
+        args="
+           /mobile_base_controller
+           /joints_update" >
+  </node>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" >
+  </node>
+  <include file="$(find rplidar_ros)/launch/rplidar.launch" />
+  <include file="$(find security_bot)/launch/localization.launch" />
+  <include file="$(find security_bot)/launch/base.launch" /> 
+</launch>
+

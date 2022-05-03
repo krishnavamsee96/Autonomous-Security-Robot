@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="model" default="$(find security_bot)/model/security_bot.urdf.xacro"/>
+  <arg name="gui" default="true" />
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <node pkg="robot_state_publisher" name="robot_publisher"  type="robot_state_publisher" >
+  </node>
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /> 
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find security_bot)/configuration/configuration_rviz.rviz"/> 
+</launch>
+

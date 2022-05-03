@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="base_global_planner" default="navfn/NavfnROS"/>
+  <arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_global_planner" value="$(arg base_global_planner)"/>
+    <param name="base_local_planner" value="$(arg base_local_planner)"/>   
+    <rosparam file="$(find security_bot)/configuration/plan.yaml" command="load"/>
+    <rosparam file="$(find security_bot)/configuration/costmap_common.yaml" command="load" ns="costmap_global" />
+    <rosparam file="$(find security_bot)/configuration/costmap_common.yaml" command="load" ns="costmap_local" />
+    <rosparam file="$(find security_bot)/configuration/costmap_local.yaml" command="load" ns="costmap_local" />
+    <rosparam file="$(find security_bot)/configuration/costmap_global.yaml" command="load" ns="costmap_global" /> 
+  </node> 
+</launch>
+

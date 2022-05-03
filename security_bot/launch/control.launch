@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <rosparam command="load"file="$(find security_bot)/configuration/control.yaml" />
+  <rosparam command="load" file="$(find security_bot)/configuration/joints.yaml" />
+  <arg default="$(find security_bot)/model/security_bot.urdf.xacro" name="model" /> 
+  <param command="$(find xacro)/xacro.py $(arg model)" name="description" />
+  <node name="hardware_robot" type="security_bot" output="screen" pkg="hardware_robot" >
+     <remap to="/cmd_vel" from=" /mobile_base_controller/cmd_vel" />
+   </node>
+  <node type="robot_state_publisher"  name="robot_publisher"  pkg="robot_state_publisher">
+  </node>
+  <node pkg="rviz" type="rviz" name="rviz"  args="-d  $(find security_bot)/configuration/configuration_rviz.rviz"/>
+  <node type="spawner" pkg="controller_manager" output="screen" name="controller" 
+        args="
+              /mobile_base_controller
+              /joints_update" >
+  </node>
+</launch>
+
